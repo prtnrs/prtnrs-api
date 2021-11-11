@@ -12,7 +12,8 @@ const authService = {
                 status: false
             };
         }
-        const token = jwt.sign({ userDTORes }, process.env.SECRET, {
+        let user = userDTORes[0];
+        const token = jwt.sign({ user }, process.env.SECRET, {
             expiresIn: 86400 // expires in 5min
         });
         return success = { token: token, status: true };
@@ -23,6 +24,15 @@ const authService = {
             if (err) {
                 return err.message;
             }
+        });
+    },
+
+    verifyJwtRole: (token) => {
+        return jwt.verify(token, process.env.SECRET, function (err, decoded) {
+            if (err) {
+                return err.message;
+            }
+            decoded.user.id;
         });
     }
 }

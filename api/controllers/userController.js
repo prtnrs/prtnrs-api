@@ -6,6 +6,35 @@ module.exports = () => {
 
   const authService = require('../services/authService');
 
+  const documentService = require('../services/documentService');
+
+  controller.create = (req, res) => {
+    authService.verifyJwtRole(token).then(r => {
+      
+    })
+
+    documentService.create(req.body.document).then(r => {
+      if (!r.status) {
+        return res.status(400).json({ auth: false, message: `Error, ${r.message}` });
+      }
+
+      let user = req.body.user;
+
+      user.document_id = r.id;
+
+      service.create(user).then(r => {
+
+        if (!r.status) {
+
+          return res.status(400).json({ auth: false, message: `Error, ${r.message}` });
+
+        }
+
+        res.status(200).json(r);
+      });
+    })
+  }
+
   controller.findAll = (req, res) => {
     const token = req.headers.authorization;
 
@@ -14,7 +43,7 @@ module.exports = () => {
     let isNotValid = authService.verifyJWT(token, req);
 
     if (isNotValid) {
-      return res.status(400).json({ auth: false, message: `Error, ${isNotValid}` });
+      return res.status(401).json({ auth: false, message: `Error, ${isNotValid}` });
     }
 
     service.findAll().then(r => {
@@ -34,7 +63,7 @@ module.exports = () => {
     if (isNotValid) {
       return res.status(400).json({ auth: false, message: `Error, ${isNotValid}` });
     }
-    
+
     service.findById(req.params.id).then(r => {
       res.status(200).json(r);
     }).catch(e => {

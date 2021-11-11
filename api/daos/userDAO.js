@@ -3,6 +3,10 @@ const { QueryTypes } = require('sequelize');
 const sequelize = require('../db/db');
 
 const userDAO = {
+    create: (user) => {
+        return User.create(user);
+    },
+
     findAll: () => {
         return User.findAll();
     },
@@ -12,7 +16,7 @@ const userDAO = {
     },
 
     findByDocumentAndPass: (userDTO) => {
-        return sequelize.query("SELECT u.name, u.user_role_id as role, u.document_id as document, d.type FROM users u INNER JOIN documents d ON d.value = :value and u.document_id = d.id and u.password = :password limit 1;", { replacements: { value: userDTO.document,  password: userDTO.password}, type: QueryTypes.SELECT });
+        return sequelize.query("SELECT u.id, u.name, u.user_role_id as role, u.document_id as document, d.type FROM users u INNER JOIN documents d ON d.value = :value and u.document_id = d.id and u.password = :password limit 1;", { replacements: { value: userDTO.document,  password: userDTO.password}, type: QueryTypes.SELECT });
     }
 }
 
