@@ -7,6 +7,10 @@ const userService = {
 
     findById: (id) => {
         return UserDAO.findById(id);
+    },
+
+    findByDocumentAndPass: (userDTO) => {
+        return UserDAO.findByDocumentAndPass(userDTO);
     }
 }
 

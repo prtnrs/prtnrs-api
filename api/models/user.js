@@ -12,7 +12,11 @@ const User = database.define('users', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    userRoleId: {
+    password: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    user_role_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {    
@@ -20,7 +24,7 @@ const User = database.define('users', {
           key: 'id'
         }
     },
-    documentId: {
+    document_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {    
